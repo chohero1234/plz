@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 공학개론 5조</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(40px, -20px); } }
+        @keyframes twinkle { 0%, 100% { opacity: 0.4; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.3); } }
+        @keyframes pop-in { 0% { transform: scale(0.8); opacity: 0; } 70% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+        body { margin: 0; overflow: hidden; cursor: none; background-color: #4b8df8; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #fbcfe8; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const { User, Users, MessageSquare, Sparkles, Plus, HelpCircle, Settings, X, MousePointer2, Star } = lucide;
+
+        const App = () => {
+            const [messages, setMessages] = useState([]);
+            const [isTyping, setIsTyping] = useState(false);
+            const [showHelpModal, setShowHelpModal] = useState(false);
+            const [showSettingsModal, setShowSettingsModal] = useState(false);
+            const [language, setLanguage] = useState('ko');
+            const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+            const scrollEndRef = useRef(null);
+
+            useEffect(() => {
+                scrollEndRef.current?.scrollIntoView({ behavior: "smooth" });
+            }, [messages, isTyping]);
+
+            useEffect(() => {
+                const handleMouseMove = (e) => setMousePos({ x: e.clientX, y: e.clientY });
+                window.addEventListener('mousemove', handleMouseMove);
+                return () => window.removeEventListener('mousemove', handleMouseMove);
+            }, []);
+
+            const translations = {
+                ko: {
+                    newChat: "새 채팅", recent: "최근 대화", help: "도움말", settings: "설정",
+                    title: "AI 공학개론 5조", inputPlaceholder: "궁금한 항목을 선택해주세요",
+                    helpTitle: "도움말", helpContent1: "우리 조원들의 정보와 소개를 확인하실 수 있습니다.",
+                    langSelect: "언어 설정"
+                },
+                en: {
+                    newChat: "New Chat", recent: "Recent", help: "Help", settings: "Settings",
+                    title: "AI Team 5", inputPlaceholder: "Select an item to chat",
+                    helpTitle: "Help", helpContent1: "You can check our team information and roles.",
+                    langSelect: "Language"
+                }
+            };
+            const t = translations[language];
+
+            const teamData = {
+                teamInfo: {
+                    question: language === 'ko' ? "우리 조 전체 소개" : "About our team",
+                    answer: "안녕하세요! 저희는 'AI 공학개론' 5조입니다. 바이오메디컬공학부와 자율전공학부의 만남으로 구성되었습니다. \n\n\"우리가 세상을 구하진 않지만, 과제는 구한다!\"",
+                    image: "https://i.postimg.cc/wjn6Rs5B/Kakao-Talk-20260323-182324252.png",
+                    neonColor: "blue"
+                },
+                members: [
+                    { id: 1, name: "조영웅", role: "조장", question: "조장 조영웅님은?", answer: "[리더십 설탕 MAX] 팀의 든든한 리더, 블로섬 담당입니다!", image: "https://i.postimg.cc/hzDL4ysX/Kakao-Talk-20260323-180255097-02.png", neonColor: "pink" },
+                    { id: 2, name: "박선주", role: "조원", question: "조원 박선주님은?", answer: "[친화력 스파이스 MAX] 러블리 버블 담당입니다!", image: "https://i.postimg.cc/gXzVcSsv/Kakao-Talk-20260323-180255097-03.png", neonColor: "blue" },
+                    { id: 4, name: "신가연", role: "조원", question: "조원 신가연님은?", answer: "[집중력 케미컬 X MAX] 버터컵 담당입니다!", image: "
